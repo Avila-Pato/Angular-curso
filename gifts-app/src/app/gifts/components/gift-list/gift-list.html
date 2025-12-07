@@ -1,0 +1,7 @@
+
+
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+  @for (gif of gifts(); track $index) {
+    <app-gift-list-item [imageUrl]="gif" />
+  }
+</div>
