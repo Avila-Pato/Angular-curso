@@ -1,17 +1,29 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { Character } from '../types/character.interface';
+
+
+//LinkedSignal - Cargar del LocalStorage // Fuera de  DragonBallService porque no es necesario 
+const loadFromLocalStorage = (): Character[] => {
+    const characters = localStorage.getItem('characters');
+
+    return characters ? JSON.parse(characters) : [];
+}
+
+
 
 @Injectable({ providedIn: 'root' })
 export class DragonBallService {
   
-    characters = signal<Character[]>([
-      { id: 1, name: 'Goku', power: 950 },
-      { id: 2, name: 'Vegeta', power: 750 },
-      { id: 3, name: 'Piccolo', power: 500 },
-      { id: 3, name: 'Krillin', power: 400 },
-    ]);
+    characters = signal<Character[]>(loadFromLocalStorage());
 
     
+
+    // Efectos  para guardar en el localStorage solamente para grabar en el localStorage
+    saveToLocalStorage = effect(() => {
+      localStorage.setItem('characters', JSON.stringify(this.characters()));
+    })
+
+
      addCharacter = (character: Character) => {
       this.characters.update((list: Character[]) => [...list, character]);
     };
