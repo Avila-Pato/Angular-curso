@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { GiftService } from './../../services/gifs.service';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { GiftList } from '../../components/gift-list/gift-list';
 
 @Component({
@@ -8,18 +9,23 @@ import { GiftList } from '../../components/gift-list/gift-list';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class TrendingPage {
-  imageUrls: string[] = [
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg',
-    'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg'
-  ];
+  // imageUrls: string[] = [
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg',
+  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg'
+  // ];
+
+  // Intancias de gifService si no existe crea 1 nueva por mi
+  GiftService = inject(GiftService);
+
+
 }
