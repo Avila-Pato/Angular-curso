@@ -1,0 +1,3 @@
+[submodule "gifts-app"]
+	path = gifts-app
+	url = https://github.com/Avila-Pato/gifts-app.git
