@@ -1,0 +1,15 @@
+
+<style>
+
+nav a.active {
+    color: red;
+}
+
+</style>
+
+<nav class="flex space-x-4 bg-[#212121] text-white p-10">
+    <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"  routerLink="/">Cotnador</a>
+    <a routerLinkActive="active" [routerLink]="['/hero']">Hero</a>
+    <a routerLinkActive="active" [routerLink]="['/dragonball']">Dragonball</a>
+    <a routerLinkActive="active" [routerLink]="['/dragonball-super']">Dragonball Super</a> 
+</nav>

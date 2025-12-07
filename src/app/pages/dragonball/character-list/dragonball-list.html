@@ -1,0 +1,17 @@
+    <ol class="list-decimal list-inside space-y-1">
+      @for (character of characters(); track character) {
+        @if (character.power > 400) {
+        <li class="flex">
+          <div class="text-green-600">
+            {{ character.id }} - {{ character.name }} ({{ character.power }})
+          </div>
+        </li>
+        } @else {
+        <li class="flex">
+          <div class="text-red-600">
+            {{ character.id }} - {{ character.name }} ({{ character.power }}) - Débil
+          </div>
+        </li>
+        }
+      }
+    </ol>

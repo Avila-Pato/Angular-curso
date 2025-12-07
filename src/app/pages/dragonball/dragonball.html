@@ -1,0 +1,35 @@
+<p class="flex justify-center font-black text-4xl mb-4">Dragon Ball Pages</p>
+
+<hr class="my-4" />
+
+<section class="w-full max-w-xl mx-auto space-y-6">
+  <!-- Formulario -->
+  <div class="p-4 bg-red-100 rounded-md">
+    <h3 class="font-semibold text-lg mb-2">Agregar {{ name() }}</h3>
+
+    <div class="flex flex-col gap-2">
+      <input
+        type="text"
+        class="border p-2 rounded"
+        placeholder="Nombre"
+        [value]="name()"
+        (input)="name.set($event.target.value)"
+      />
+      <input 
+      type="number"
+       class="border p-2 rounded"
+        placeholder="Poder"
+        [value]="power()"
+        (input)="power.set(+$event.target.value)" />
+
+        <button class="mt-2 mx-0 p-2 bg-red-800 text-white rounded hover:bg-red-900" (click)="AddCharacter()">
+            Agregar  
+      </button>
+    </div>
+  </div>
+
+  <!-- Listado -->
+  <div class="flex flex-col p-4 bg-red-200 rounded-md">
+
+  </div>
+</section>
