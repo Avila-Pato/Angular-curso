@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MenuOption } from '../../interfaces/types';
 import { RouterLink, RouterLinkActive } from "@angular/router";
+import { GiftService } from '../../services/gifs.service';
 
 @Component({
   selector: 'app-gifs-side-menu-options',
@@ -9,6 +10,9 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GifsSideMenu { 
+
+  gitService = inject(GiftService)
+
   menuoptions:MenuOption[] = [
     {
       icon: 'https://img.icons8.com/external-tanah-basah-basic-outline-tanah-basah/48/external-trending-content-creator-tanah-basah-basic-outline-tanah-basah.png',

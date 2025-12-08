@@ -1,10 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { environmnet } from '@environments/environment';
 import type { GiphyResponse } from '../interfaces/giphy.interfaces';
 import { Gif } from '../interfaces/gif.interface';
 import { GifMapper } from 'src/app/mapper/gif.mapper';
 import { map, tap } from 'rxjs';
+
+
+const GIF_KEY = 'gifs';
+
+const loadFromLocalStorage = () => {
+    const gifsFromLocalStorage = localStorage.getItem(GIF_KEY) ?? '{}';
+    const gifs = JSON.parse(gifsFromLocalStorage);
+    return gifs
+}
 
 @Injectable({providedIn: 'root'})
 
@@ -16,10 +25,17 @@ export class GiftService {
     trendingGifst = signal<Gif[]>([]);
     trendingGifsLoading = signal(true);
 
+    searchHistory = signal<Record<string, Gif[]>>(loadFromLocalStorage());
+    searchHistoryKeys = computed(() => Object.keys(this.searchHistory()));
+
     constructor() {
         this.loadTrendingGifts();
     }
     
+    saveGifsToLocalStorage = effect(() => {
+        const historyString = JSON.stringify(this.searchHistory());
+        localStorage.setItem(GIF_KEY, historyString);
+    });
 
     // Peticion HTTP
     
@@ -48,7 +64,14 @@ searchGifs(query: string) {
         map(({ data }) => data),
         map((items) => GifMapper.mapGiphyItemsToGiveArray(items)),
 
-        // TODO PARA MANEJAR EL HISTORIAL
+        // TODO PARA MANEJAR EL HISTORIAL efectos seccundarios
+        tap( items => {
+            this.searchHistory.update(history => ({
+                ...history,
+                [query.toLowerCase()]: items
+            }))
+        })
+
     )
     
     
@@ -59,5 +82,10 @@ searchGifs(query: string) {
     // });
 
     
+}
+
+getHistoryGifs(query: string | undefined) {
+    if (!query) return [];
+    return this.searchHistory()[query.toLowerCase()] ?? [];
 }
 }

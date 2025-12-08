@@ -16,6 +16,10 @@ export const routes: Routes = [
         loadComponent: () => import('./gifts/pages/trending-page/trending-page'), // Lazy loading
       },
        {
+        path: 'history/:query',
+        loadComponent: () => import('./gifts/pages/gif-history/gif-history'), // Lazy loading
+      },
+       {
         path: '**',
         redirectTo: 'trending',
         pathMatch: 'full',
