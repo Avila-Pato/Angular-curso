@@ -4,8 +4,10 @@ import { environmnet } from '@environments/environment';
 import type { GiphyResponse } from '../interfaces/giphy.interfaces';
 import { Gif } from '../interfaces/gif.interface';
 import { GifMapper } from 'src/app/mapper/gif.mapper';
+import { map, tap } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
+
 export class GiftService {
     private http = inject(HttpClient);
 
@@ -34,5 +36,28 @@ export class GiftService {
     });
 }
 
+searchGifs(query: string) {
+
+    return this.http.get<GiphyResponse>(`${ environmnet.gitphyUrl }/gifs/search`, {
+        params: {
+            api_key: environmnet.keyApiGifts,
+            limit: '20',
+            q: query
+        }
+    }).pipe(
+        map(({ data }) => data),
+        map((items) => GifMapper.mapGiphyItemsToGiveArray(items)),
+
+        // TODO PARA MANEJAR EL HISTORIAL
+    )
     
+    
+    // .subscribe((res) => {
+    //     const gifts = GifMapper.mapGiphyItemsToGiveArray(res.data);
+    //     this.trendingGifst.set(gifts);
+    //     console.log(gifts);
+    // });
+
+    
+}
 }
