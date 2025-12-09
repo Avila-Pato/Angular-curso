@@ -5,7 +5,7 @@ export const environmnet = {
     companySlogan: 'Maneja tus regalos',
 
     // Apis
-    keyApiGifts: 'Mvvo4zd8EvsyPfPmVxb8Z9VmHx7nMhr0',
+    keyApiGifts: 'Nl5V758XJcEV5Xhh7tFsI5Ws8cLKWiPU',
     gitphyUrl: 'https://api.giphy.com/v1',
 
 

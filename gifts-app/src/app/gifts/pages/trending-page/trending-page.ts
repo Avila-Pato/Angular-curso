@@ -1,31 +1,45 @@
+import { ScrollStateService } from 'src/app/shared/services/scroll-state.service';
 import { GiftService } from './../../services/gifs.service';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { GiftList } from '../../components/gift-list/gift-list';
+import { AfterViewInit, Component, HostListener, inject, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-trending-page',
-  imports: [GiftList],
+  imports: [],
   templateUrl: './trending-page.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class TrendingPage {
-  // imageUrls: string[] = [
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg',
-  //   'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg'
-  // ];
+export default class TrendingPage implements OnInit, AfterViewInit {
 
   // Intancias de gifService si no existe crea 1 nueva por mi
   GiftService = inject(GiftService);
 
+  ngOnInit(): void {
+    this.GiftService.resetTrendingGifts();
+    this.GiftService.loadTrendingGifts();
+  }
 
+  ngAfterViewInit(): void {
+    const scrollDiv = this.scrollStateService.trendingScrollState();
+    if(!scrollDiv) return;
+
+    window.scrollTo({ top: scrollDiv, behavior: 'instant' });
+  }
+
+  scrollStateService = inject(ScrollStateService)
+
+  @HostListener('window:scroll')
+  onScroll() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const clientHeight = window.innerHeight;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollPosition = scrollTop + clientHeight;
+    const threshold = scrollHeight - 500;
+    const isNearBottom = scrollPosition >= threshold;
+
+    // permite guardar la posicion del scroll
+    this.scrollStateService.trendingScrollState.set(scrollTop);
+
+    if(isNearBottom && !this.GiftService.trendingGifsLoading()) {
+      this.GiftService.loadTrendingGifts();
+    }
+  }
 }

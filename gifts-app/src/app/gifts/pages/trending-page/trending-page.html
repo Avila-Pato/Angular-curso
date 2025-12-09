@@ -1,1 +1,26 @@
-<app-gift-list [gifts]="GiftService.trendingGifst()" />
+<!-- <section>
+    <app-gift-list [gifts]="GiftService.trendingGifst()" />
+
+</section> -->
+
+
+
+<div class="min-h-screen grid grid-cols-2 md:grid-cols-4 gap-4 pt-5"
+    #groupDiv
+>
+
+    @for (group of GiftService.trendingGifGroup(); track $index) {
+         <div class="grid gap-4">
+            @for (gif of group; track gif.id) {
+                <div>
+                    <img
+                    class="h-full w-full rounded-base object-cover" 
+                    [src]="gif.url" 
+                    [alt]="gif.title">
+                </div>
+            }
+         </div>
+    }
+
+
+    
