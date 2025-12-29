@@ -1,0 +1,8 @@
+:host {
+  display: block;
+}
+
+.btn-active {
+  font-weight: bold;
+  background: rgb(149, 62, 16);
+}
