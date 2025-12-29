@@ -1,3 +1,7 @@
-<app-input-search placeholder="Buscar por capital" />
+<app-input-search 
+(value)="onSearch($event)" 
+ placeholder="Buscar por capital"
+/>
+<!-- (value)="onSearch($event) => toma el valor del hijo y el $event es la query " -->
 
-<app-country-list />
+<app-country-list [countries]="countries()" />
