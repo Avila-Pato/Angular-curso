@@ -1,7 +1,14 @@
 <app-input-search 
-(value)="onSearch($event)" 
+(value)="query.set($event)" 
  placeholder="Buscar por capital"
 />
 <!-- (value)="onSearch($event) => toma el valor del hijo y el $event es la query " -->
 
-<app-country-list [countries]="countries()" />
+@if (countryResource.error()) {
+    <h3>{{ countryResource.error() }}</h3>
+}
+
+@if (countryResource.hasValue()) {
+    <app-country-list [countries]="countryResource.value()!" />
+
+}

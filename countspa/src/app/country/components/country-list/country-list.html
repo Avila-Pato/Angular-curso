@@ -17,25 +17,29 @@
                 <td>{{ index + 1 }}</td>
                 <td>
                     <img 
-                        [src]="country.flags.png" 
-                        [alt]="country.name.common" 
+                        [src]="country.flagSvg" 
+                        [alt]="country.name" 
                         class="img-fluid" 
                         style="width: 20px; height: 20px;"
                     />
                 </td>
                 <td>
                     <img 
-                        [src]="country.flags.svg" 
-                        [alt]="country.name.common" 
+                        [src]="country.flagSvg" 
+                        [alt]="country.name" 
                         class="img-fluid" 
                         style="width: 40px; height: 30px;"
                     />
                 </td>
-                <td>{{ country.name.common }}</td>
+                <td>{{ country.name }}</td>
                 <td>{{ country.capital }}</td>
-                <td>{{ country.population }}</td>
                 <td>
-                    <a [routerLink]="" class="btn btn-primary">Ver mas...</a>
+                    <span>
+                        {{ country.population  | number}}
+                    </span>
+                </td>
+                <td>
+                    <a [routerLink]="['/country/by', country.cca2]" class="btn btn-primary">Ver mas...</a>
                 </td>
             </tr>
 
