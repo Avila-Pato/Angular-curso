@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { RESTCountry } from '../interfaces/res-countries.interface';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, count, delay, map, throwError } from 'rxjs';
 import { CountryMapper } from '../mappers/country.mapper';
 
 
@@ -19,12 +19,12 @@ export class Country {
     // ESTA ES PARA LAS PETICIONES HTTP por fetch
     query = query.toLowerCase().trim();
     return this.http.get<RESTCountry[]>(`${API_URL}/capital/${query}`)
-    .pipe(map((resp ) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
-    catchError((error) => {
-      return throwError(() => new Error(`Error al buscar la capital ${query}: ${error.message}`));
-    })
-  )
-  } 
+      .pipe(map((resp) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
+        catchError((error) => {
+          return throwError(() => new Error(`Error al buscar la capital ${query}: ${error.message}`));
+        })
+      )
+  }
 
 
   // Busqueda por nombre de pais
@@ -33,11 +33,22 @@ export class Country {
     const url = `${API_URL}/name/${query}`;
 
     return this.http.get<RESTCountry[]>(url)
-    .pipe(map((resp ) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
-    catchError((error) => {
-      return throwError(() => new Error(`Error al buscar la capital ${query}: ${error.message}`));
-    })
-  )
-  } 
+      .pipe(map((resp) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
+        delay(1000),
+        catchError((error) => {
+          return throwError(() => new Error(`Error al buscar el país ${query}: ${error.message}`));
+        })
+      )
+  }
+
+  searchByAlphaCode(code: string) {
+    return this.http.get<RESTCountry[]>(`${API_URL}/alpha/${code}`)
+      .pipe(map((resp) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
+      map((countries) => countries.at(0)),
+        catchError((error) => {
+          return throwError(() => new Error(`Error al buscar el pais ${code}: ${error.message}`));
+        })
+      )
+  }
 }
 

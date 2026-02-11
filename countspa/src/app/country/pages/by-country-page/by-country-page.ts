@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, resource, signal, effect, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { InputSearch } from "../../components/input-search/input-search";
 import { CountryList } from "../../components/country-list/country-list";
-import { firstValueFrom } from 'rxjs';
-
 import { Country as CountryService } from '../../services/country';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-by-country-page',
@@ -13,27 +13,15 @@ import { Country as CountryService } from '../../services/country';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ByCountryPage {
-    countryService = inject(CountryService)
+  countryService = inject(CountryService);
   query = signal('');
-  searchTrigger = signal(0);
 
-  constructor() {
-    effect(() => {
-      if (this.query()) {
-        this.searchTrigger.update(v => v + 1);
-      }
-    });
-  }
+  countryResource = rxResource({
+    params: () => ({ query: this.query() }),
+    stream: ({ params }) => {
+      if (!params.query) return of([]);
 
-  countryResource = resource({
-    loader: async () => {
-      this.searchTrigger();
-      const q = this.query();
-      if (!q) return []
-
-      return await firstValueFrom(
-        this.countryService.searchByCountry(q)
-      )
+      return this.countryService.searchByCountry(params.query);
     }
-  })
- }
+  });
+}

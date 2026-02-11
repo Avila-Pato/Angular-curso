@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, resource, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { InputSearch } from "../../components/input-search/input-search";
 import { CountryList } from "../../components/country-list/country-list";
-
 import { Country as CountryService } from '../../services/country';
-import { firstValueFrom } from 'rxjs';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-by-capital',
@@ -13,46 +13,15 @@ import { firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ByCapital {
-  countryService = inject(CountryService) // inyecta el servicio http para hacer el fetch
-  query = signal(''); // señal reactiva para el query de busqueda
+  countryService = inject(CountryService);
+  query = signal('');
 
-  countryResource = resource({
-    loader: async () => {
-      const query = this.query();
-      if (!query) return []
+  countryResource = rxResource({
+    params: () => ({ query: this.query() }),
+    stream: ({ params }) => {
+      if (!params.query) return of([]);
 
-      return await firstValueFrom(
-        this.countryService.searchByCapital(query)
-      )
+      return this.countryService.searchByCapital(params.query);
     }
-  })
-
-    
-  // isLoading =  signal(false);
-  // isError = signal<string | null>(null);
-  // countries = signal<Country[]>([]);
-
-  // onSearch(query: string) {
-  //   if (this.isLoading()) return;
-
-  //   this.isLoading.set(true);
-  //   this.isError.set(null);
-
-  //   this.countryService.searchByCapital(query)
-  //   // la funcion no se disparara hasta que se haga el subscribe
-  //   .subscribe({
-  //     next: (countries) => {
-
-  //     this.isLoading.set(false);
-  //     this.countries.set(countries);
-      
-  //     },
-  //     error: (err) => {
-  //       this.isLoading.set(false)
-  //       this.countries.set([])
-  //       this.isError.set("No se encontro un pais con esa capital")
-  //     },
-  //   })
-  // }
-
- }
+  });
+}

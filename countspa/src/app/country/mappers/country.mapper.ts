@@ -1,4 +1,3 @@
-import { resource } from '@angular/core';
 import { Country } from '../interfaces/country.inteface';
 import { RESTCountry } from './../interfaces/res-countries.interface';
 export class CountryMapper {
@@ -10,6 +9,8 @@ export class CountryMapper {
       flagSvg: restCountry.flags.svg,
       name: restCountry.translations["spa"].common ?? "No hay lenguaje en español",
       population: restCountry.population,
+      region: restCountry.region,
+      subregion: restCountry.subregion
     };
   }
 
