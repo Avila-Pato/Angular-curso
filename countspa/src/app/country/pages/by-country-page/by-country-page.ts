@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Subject, switchMap, map, startWith, catchError, of } from 'rxjs';
 import { InputSearch } from "../../components/input-search/input-search";
 import { CountryList } from "../../components/country-list/country-list";
-import { Country as CountryService } from '../../services/country';
+import { CountryService } from '../../services/country';
 
 @Component({
   selector: 'app-by-country-page',

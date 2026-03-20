@@ -19,4 +19,5 @@ export class CountryMapper {
   ): Country[] {
     return restCountries.map(country => this.mapRestCountryToCountry(country))
   }
+  
 }

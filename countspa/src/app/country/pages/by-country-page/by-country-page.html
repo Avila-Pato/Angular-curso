@@ -1,4 +1,10 @@
-<app-input-search (value)="onSearch($event)" placeholder="Buscar por pais" />
+
+<app-input-search
+  (value)="onSearch($event)"
+  (submit)="onSearch($event)"
+  placeholder="Buscar por Pais"
+
+/>
 
 @if (error()) {
   <div class="alert alert-error">
