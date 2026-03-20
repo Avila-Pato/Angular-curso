@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Subject, switchMap, map, startWith, catchError, of } from 'rxjs';
+=======
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+>>>>>>> e9aefa8c87232893a7a3878b5e3553bc5e6ae713
 import { InputSearch } from "../../components/input-search/input-search";
 import { CountryList } from "../../components/country-list/country-list";
 import { Country as CountryService } from '../../services/country';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-by-country-page',
@@ -13,6 +19,7 @@ import { Country as CountryService } from '../../services/country';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ByCountryPage {
+<<<<<<< HEAD
   private countryService = inject(CountryService);
 
   query = signal('');
@@ -43,4 +50,17 @@ export class ByCountryPage {
     this.hasSearched.set(true);
     this.search$.next(value);
   }
+=======
+  countryService = inject(CountryService);
+  query = signal('');
+
+  countryResource = rxResource({
+    params: () => ({ query: this.query() }),
+    stream: ({ params }) => {
+      if (!params.query) return of([]);
+
+      return this.countryService.searchByCountry(params.query);
+    }
+  });
+>>>>>>> e9aefa8c87232893a7a3878b5e3553bc5e6ae713
 }

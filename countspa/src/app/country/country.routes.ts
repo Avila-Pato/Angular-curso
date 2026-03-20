@@ -26,7 +26,7 @@ export const countryRutes: Routes = [
             },
             // Ruta dinamica
             {
-                path: "country/:code",
+                path: "by/:code",
                 component: CountryPage
 
             },
