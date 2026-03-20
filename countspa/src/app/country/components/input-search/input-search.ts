@@ -9,5 +9,14 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 })
 export class InputSearch {
   placeholder = input<string>("Buscar");
-  value = output<string>();
- }
+  readonly value = output<string>();
+  readonly submit = output<string>();
+
+  onTyping(val: string) {
+    this.value.emit(val);
+  }
+
+  onSubmit(val: string) {
+    this.submit.emit(val);
+  }
+}

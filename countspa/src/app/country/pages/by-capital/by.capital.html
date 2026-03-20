@@ -1,5 +1,8 @@
-<app-input-search (value)="onSearch($event)" placeholder="Buscar por capital" />
-
+<app-input-search
+  (value)="onSearch($event)"
+  (submit)="onSearch($event)"
+  placeholder="Buscar por capital"
+/>
 @if (error()) {
   <div class="alert alert-error">
     <h3>Error:</h3>
