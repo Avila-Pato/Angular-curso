@@ -1,14 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, resource, signal } from '@angular/core';
 import { InputSearch } from "../../components/input-search/input-search";
 import { CountryList } from "../../components/country-list/country-list";
+
 import { Country as CountryService } from '../../services/country';
-<<<<<<< HEAD
 import { catchError, firstValueFrom, map, of, startWith, Subject, switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
-=======
-import { rxResource } from '@angular/core/rxjs-interop';
-import { of } from 'rxjs';
->>>>>>> e9aefa8c87232893a7a3878b5e3553bc5e6ae713
 
 @Component({
   selector: 'app-by-capital',
@@ -18,7 +14,6 @@ import { of } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ByCapital {
-<<<<<<< HEAD
   private countryService = inject(CountryService) // inyecta el servicio http para hacer el fetch
   
   query = signal(''); // señal reactiva para el query de busqueda
@@ -53,17 +48,3 @@ export class ByCapital {
   }
 
  }
-=======
-  countryService = inject(CountryService);
-  query = signal('');
-
-  countryResource = rxResource({
-    params: () => ({ query: this.query() }),
-    stream: ({ params }) => {
-      if (!params.query) return of([]);
-
-      return this.countryService.searchByCapital(params.query);
-    }
-  });
-}
->>>>>>> e9aefa8c87232893a7a3878b5e3553bc5e6ae713

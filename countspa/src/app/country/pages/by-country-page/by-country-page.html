@@ -1,6 +1,5 @@
 <app-input-search (value)="onSearch($event)" placeholder="Buscar por pais" />
 
-<<<<<<< HEAD
 @if (error()) {
   <div class="alert alert-error">
     <h3>Error:</h3>
@@ -17,12 +16,3 @@
 } @else {
   <p>Escribe un país para buscar</p>
 }
-=======
-
-<app-country-list 
-[countries]="countryResource.value() ?? []" 
-[isLoading]="countryResource.isLoading()"
-[isEmpty]="countryResource.value()?.length === 0"
-[errorMessage]="countryResource.error()"
-/>
->>>>>>> e9aefa8c87232893a7a3878b5e3553bc5e6ae713
