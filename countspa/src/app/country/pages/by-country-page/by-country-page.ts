@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, resource, signal, effect, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Subject, switchMap, map, startWith, catchError, of } from 'rxjs';
 import { InputSearch } from "../../components/input-search/input-search";
 import { CountryList } from "../../components/country-list/country-list";
-import { firstValueFrom } from 'rxjs';
-
 import { Country as CountryService } from '../../services/country';
 
 @Component({
@@ -13,27 +13,34 @@ import { Country as CountryService } from '../../services/country';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ByCountryPage {
-    countryService = inject(CountryService)
+  private countryService = inject(CountryService);
+
   query = signal('');
-  searchTrigger = signal(0);
+  hasSearched = signal(false);
 
-  constructor() {
-    effect(() => {
-      if (this.query()) {
-        this.searchTrigger.update(v => v + 1);
-      }
-    });
-  }
+  private search$ = new Subject<string>();
 
-  countryResource = resource({
-    loader: async () => {
-      this.searchTrigger();
-      const q = this.query();
-      if (!q) return []
-
-      return await firstValueFrom(
-        this.countryService.searchByCountry(q)
+  private state = toSignal(
+    this.search$.pipe(
+      switchMap(q =>
+        this.countryService.searchByCountry(q).pipe(
+          map(data => ({ loading: false, error: null, data })),
+          startWith({ loading: true, error: null, data: [] }),
+          catchError(err => of({ loading: false, error: err.message as string, data: [] }))
+        )
       )
-    }
-  })
- }
+    ),
+    { initialValue: { loading: false, error: null, data: [] } }
+  );
+
+  isLoading = computed(() => this.state().loading);
+  error = computed(() => this.state().error);
+  countries = computed(() => this.state().data);
+
+  onSearch(value: string) {
+    if (!value.trim()) return;
+    this.query.set(value);
+    this.hasSearched.set(true);
+    this.search$.next(value);
+  }
+}

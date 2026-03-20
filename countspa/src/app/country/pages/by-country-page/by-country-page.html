@@ -1,9 +1,18 @@
-<app-input-search
-    (value)="query.set($event)"
-placeholder="Buscar por pais" />
+<app-input-search (value)="onSearch($event)" placeholder="Buscar por pais" />
 
-@if ( countryResource.error()) {
-    <h3>{{ countryResource.error() }}</h3>
-} @if (countryResource.hasValue()) {
-    <app-country-list [countries]="countryResource.value()!" />
+@if (error()) {
+  <div class="alert alert-error">
+    <h3>Error:</h3>
+    {{ error() }}
+  </div>
+} @else if (isLoading()) {
+  <p>Cargando...</p>
+} @else if (hasSearched()) {
+  @if (countries().length > 0) {
+    <app-country-list [countries]="countries()" />
+  } @else {
+    <p>No se encontraron países</p>
+  }
+} @else {
+  <p>Escribe un país para buscar</p>
 }

@@ -1,14 +1,13 @@
-import { resource } from '@angular/core';
 import { Country } from '../interfaces/country.inteface';
 import { RESTCountry } from './../interfaces/res-countries.interface';
 export class CountryMapper {
   static mapRestCountryToCountry(restCountry: RESTCountry): Country {
     return {
-      capital: restCountry.capital.join(', '),
+      capital: restCountry.capital?.join(', ') ?? 'Sin capital',
       cca2: restCountry.cca2,
       flag: restCountry.flag,
       flagSvg: restCountry.flags.svg,
-      name: restCountry.translations["spa"].common ?? "No hay lenguaje en español",
+      name: restCountry.translations?.['spa']?.common ?? restCountry.name.common,
       population: restCountry.population,
     };
   }
@@ -16,6 +15,6 @@ export class CountryMapper {
   static mapRestCountryArrayToCountryArray (
     restCountries: RESTCountry[]
   ): Country[] {
-    return restCountries.map(this.mapRestCountryToCountry)
+    return restCountries.map(country => this.mapRestCountryToCountry(country))
   }
 }

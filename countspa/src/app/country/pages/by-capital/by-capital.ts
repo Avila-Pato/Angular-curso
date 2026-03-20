@@ -3,7 +3,8 @@ import { InputSearch } from "../../components/input-search/input-search";
 import { CountryList } from "../../components/country-list/country-list";
 
 import { Country as CountryService } from '../../services/country';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, map, of, startWith, Subject, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-by-capital',
@@ -13,46 +14,37 @@ import { firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ByCapital {
-  countryService = inject(CountryService) // inyecta el servicio http para hacer el fetch
+  private countryService = inject(CountryService) // inyecta el servicio http para hacer el fetch
+  
   query = signal(''); // señal reactiva para el query de busqueda
+  hasSearched = signal(false); // senal reactiva para saber si se ha hecho la busqueda
 
-  countryResource = resource({
-    loader: async () => {
-      const query = this.query();
-      if (!query) return []
+  private serch$ = new Subject<string>()
 
-      return await firstValueFrom(
-        this.countryService.searchByCapital(query)
+//Filtro
+  private state  = toSignal(
+    this.serch$.pipe(
+      switchMap(q => 
+        this.countryService.searchByCapital(q).pipe(
+          map(data => ({ loading: false, error: null, data })),
+          startWith({ loading: true, error: null, data: []}),
+          catchError(err => of({ loading: false, error: err.message ?? "Error capital no encontrada" as string, data: []}))
+        )
       )
-    }
-  })
+    ),
+    { initialValue: { loading: false, error: null, data: []}}
+  );
 
-    
-  // isLoading =  signal(false);
-  // isError = signal<string | null>(null);
-  // countries = signal<Country[]>([]);
+  isLoading = computed(() => this.state().loading)
+  error = computed(() => this.state().error)
+  capital = computed(() => this.state().data)
 
-  // onSearch(query: string) {
-  //   if (this.isLoading()) return;
-
-  //   this.isLoading.set(true);
-  //   this.isError.set(null);
-
-  //   this.countryService.searchByCapital(query)
-  //   // la funcion no se disparara hasta que se haga el subscribe
-  //   .subscribe({
-  //     next: (countries) => {
-
-  //     this.isLoading.set(false);
-  //     this.countries.set(countries);
-      
-  //     },
-  //     error: (err) => {
-  //       this.isLoading.set(false)
-  //       this.countries.set([])
-  //       this.isError.set("No se encontro un pais con esa capital")
-  //     },
-  //   })
-  // }
+  // busqueda
+  onSearch(value : string) {
+    if(!value.trim()) return;
+    this.query.set(value)
+    this.hasSearched.set(true)
+    this.serch$.next(value)
+  }
 
  }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { RESTCountry } from '../interfaces/res-countries.interface';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, throwError, tap } from 'rxjs';
 import { CountryMapper } from '../mappers/country.mapper';
 
 
@@ -18,7 +18,9 @@ export class Country {
   searchByCapital(query: string) {
     // ESTA ES PARA LAS PETICIONES HTTP por fetch
     query = query.toLowerCase().trim();
-    return this.http.get<RESTCountry[]>(`${API_URL}/capital/${query}`)
+    const url = `${API_URL}/capital/${query}`;
+
+    return this.http.get<RESTCountry[]>(url)
     .pipe(map((resp ) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
     catchError((error) => {
       return throwError(() => new Error(`Error al buscar la capital ${query}: ${error.message}`));
@@ -33,11 +35,13 @@ export class Country {
     const url = `${API_URL}/name/${query}`;
 
     return this.http.get<RESTCountry[]>(url)
-    .pipe(map((resp ) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
-    catchError((error) => {
-      return throwError(() => new Error(`Error al buscar la capital ${query}: ${error.message}`));
-    })
-  )
+    .pipe(
+      tap(resp => console.log('API Response:', resp)),
+      map((resp ) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
+      catchError((error) => {
+        return throwError(() => new Error(`Error al buscar la capital ${query}: ${error.message}`));
+      })
+    )
   } 
 }
 
