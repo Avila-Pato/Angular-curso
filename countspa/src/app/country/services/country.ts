@@ -30,6 +30,7 @@ export class CountryService {
   //Cache para evitar llamadas repetidas
   private capitalCache = new Map<string, Country[]>();
   private countryCache = new Map<string, Country[]>();
+  private regionCache = new Map<string, Country[]>();
 
   searchByCapital(query: string) {
     // ESTA ES PARA LAS PETICIONES HTTP por fetch
@@ -39,7 +40,7 @@ export class CountryService {
     if( this.capitalCache.has(query)) {
       return of(this.capitalCache.get(query) ?? []);
     }
-    console.log('Haciendo petición HTTP para capital:', query);
+    // console.log('Haciendo petición HTTP para capital:', query);
 
     return this.http.get<RESTCountry[]>(url)
     .pipe(
@@ -60,7 +61,7 @@ export class CountryService {
     if( this.countryCache.has(query)) {
       return of(this.countryCache.get(query) ?? []);
     }
-    console.log('Haciendo petición HTTP para pais:', query);
+    // console.log('Haciendo petición HTTP para pais:', query);
 
     return this.http.get<RESTCountry[]>(url)
     .pipe(
@@ -71,5 +72,25 @@ export class CountryService {
       })
     )
   } 
+
+  searchByRegion(query: string) {
+    query = query.toLowerCase().trim();
+    const url = `${API_URL}/region/${query}`;
+
+    if( this.regionCache.has(query)) {
+      return of(this.regionCache.get(query) ?? []);
+    }
+    // console.log('Haciendo petición HTTP para region:', query);
+    
+    return this.http.get<RESTCountry[]>(url)
+    .pipe(
+      tap(resp => console.log('API Response:', resp)),
+      map((resp ) => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
+      catchError((error) => {
+        return throwError(() => new Error(`Error al buscar la capital ${query}: ${error.message}`));
+      })
+    )
+
+  }
 }
 

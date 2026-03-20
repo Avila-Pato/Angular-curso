@@ -1,3 +1,22 @@
+<app-input-search
+  (value)="onSearch($event)"
+  (submit)="onSearch($event)"
+  placeholder="Buscar por Region"
+/>
 
-
-<app-country-list [countries]="[]" />
+@if (error()) {
+  <div class="alert alert-error">
+    <h3>Error:</h3>
+    {{ error() }}
+  </div>
+} @else if (isLoading()) {
+  <p>Cargando...</p>
+} @else if (hasSearched()) {
+  @if (regions().length > 0) {
+    <app-country-list [countries]="regions()" />
+  } @else {
+    <p>No se encontraron países</p>
+  }
+} @else {
+  <p>Escribe una region para buscar</p>
+}
