@@ -13,15 +13,16 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/numbers-page/numbers-page')
     },
     {
-        path: 'custom',
-        title: 'Pipes personalizados ',
-        loadComponent: () => import('./pages/custom-page/custom-page')
-    },
-    {
         path: 'uncommon',
         title: 'Pipes no comunes ',
         loadComponent: () => import('./pages/uncommon-page/uncommon-page')
     },
+    {
+        path: 'custom',
+        title: 'Pipes personalizados ',
+        loadComponent: () => import('./pages/custom-page/custom-page')
+    },
+
     //Ruta por defecto
     {
         path: '**',

@@ -1,1 +1,89 @@
-<p>uncommon-page works!</p>,
+<section class="mx-5 mb-5">
+  <h1 class="text-2xl font-extrabold">Pipes no tamcomunes</h1>
+  <h3 class="text-xl font-light">Pies incluidos en angular</h3>
+</section>
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+  <app-card title="i18nselectPipe">
+    <p>
+      Saludos {{ client().name }}, es un placer {{ client().gender | i18nSelect: invitationMap }}
+    </p>
+
+    <button class="btn btn-primary" (click)="changeClient()">Click me</button>
+  </app-card>
+
+  <app-card title="i18npluralPipe">
+    <p>Actualmente tenemos {{ clients().length | i18nPlural: clientsMap() }} personas esoerando</p>
+    <button [disabled]="clients().length === 0" (click)="deleteClient()" class="btn btn-primary">
+      borarr cliente
+    </button>
+  </app-card>
+
+  <app-card title="SlicePipe">
+    <b>original</b>
+    <p class="text-primary">
+      {{ clients().join(', ') }}
+    </p>
+
+    <b>slice: 0:3</b>
+    <p class="text-primary">
+      {{ clients() | slice: 0 : 3 }}
+    </p>
+
+    <b>slice: 0:2</b>
+    <p class="text-primary">
+      {{ clients() | slice: 0 : 2 }}
+    </p>
+  </app-card>
+
+  <app-card title="JsonPipe">
+    <!-- Usualmenet para hacer decoraciones -->
+    <pre>
+      {{ client() | json }}
+    </pre>
+
+    <pre>
+      {{ clients() | json }}
+    </pre>
+  </app-card>
+
+  <app-card title="KeyValuePipe">
+    <!-- <pre> -->
+        <!-- {{ client() | keyvalue | json }} -->
+    <!-- </pre> -->
+          <ul>
+            @for (item of profile | keyvalue; track $index) {
+
+                    <li>
+                        <strong class="text-primary"> {{ item.key }}</strong>
+                        <span>
+                            {{ item.value }}
+                        </span>
+                    </li>
+                }
+            </ul>
+  </app-card>
+
+
+
+   <app-card title="AsyncPipe">
+        <p>{{ promiseValue | async}}</p>
+
+        @if (promiseValue | async; as value) {
+            <p class="text-primary">{{ value | json }}></p>
+        }@else {
+            <p class="text-primary">Cargando...></p>
+        }
+        <!--  -->
+
+        <h3 class="text-2xl">ObSERVABLE</h3>
+        <p>{{ myObservable | async }}</p>
+
+        @if (myObservable | async; as value) {
+            <p class="text-primary">{{ value | json }}></p>
+        }@else { 
+            <p>Espere...</p>
+        }
+  </app-card>
+
+</div>

@@ -4,7 +4,7 @@ import { AvaibleLocales, LocaleService } from '../../../services/locale.service'
 
 @Component({
   selector: 'app-basic-page',
-  imports: [LowerCasePipe, UpperCasePipe, TitleCasePipe, DatePipe, I18nSelectPipe],
+  imports: [LowerCasePipe, UpperCasePipe, TitleCasePipe, DatePipe],
   templateUrl: './basic-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
