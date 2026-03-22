@@ -1,11 +1,24 @@
+
 <app-input-search
-    (value)="query.set($event)"
-placeholder="Buscar por pais" />
+  (value)="onSearch($event)"
+  (submit)="onSearch($event)"
+  placeholder="Buscar por Pais"
 
-
-<app-country-list 
-[countries]="countryResource.value() ?? []" 
-[isLoading]="countryResource.isLoading()"
-[isEmpty]="countryResource.value()?.length === 0"
-[errorMessage]="countryResource.error()"
 />
+
+@if (error()) {
+  <div class="alert alert-error">
+    <h3>Error:</h3>
+    {{ error() }}
+  </div>
+} @else if (isLoading()) {
+  <p>Cargando...</p>
+} @else if (hasSearched()) {
+  @if (countries().length > 0) {
+    <app-country-list [countries]="countries()" />
+  } @else {
+    <p>No se encontraron países</p>
+  }
+} @else {
+  <p>Escribe un país para buscar</p>
+}

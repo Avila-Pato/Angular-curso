@@ -5,8 +5,9 @@
     [placeholder]="placeholder()"
     autofocus
     #txtSearch
-    (keyup.enter)="value.emit( txtSearch.value )"
+    (input)="onTyping(txtSearch.value)"
+    (keyup.enter)="onSubmit(txtSearch.value)"
     />
 
-    <button class="bg-[rgb(149,62,16)] btn" (click)="value.emit( txtSearch.value )">Buscar</button>
+    <button class="bg-[rgb(149,62,16)] btn" (click)="onSubmit(txtSearch.value)">Buscar</button>
 </section>

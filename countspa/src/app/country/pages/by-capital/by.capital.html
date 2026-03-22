@@ -1,14 +1,22 @@
-<app-input-search 
-(value)="query.set($event)" 
- placeholder="Buscar por capital"
+<app-input-search
+  (value)="onSearch($event)"
+  (submit)="onSearch($event)"
+  placeholder="Buscar por capital"
+
 />
-<!-- (value)="onSearch($event) => toma el valor del hijo y el $event es la query " -->
-
-@if (countryResource.error()) {
-    <h3>{{ countryResource.error() }}</h3>
-}
-
-@if (countryResource.hasValue()) {
-    <app-country-list [countries]="countryResource.value()!" />
-
+@if (error()) {
+  <div class="alert alert-error">
+    <h3>Error:</h3>
+    {{ error() }}
+  </div>
+} @else if (isLoading()) {
+  <p>Cargando...</p>
+} @else if (hasSearched()) {
+  @if (capital().length > 0) {
+    <app-country-list [countries]="capital()" />
+  } @else {
+    <p>No se encontraron países</p>
+  }
+} @else {
+  <p>Escribe una capital para buscar</p>
 }
