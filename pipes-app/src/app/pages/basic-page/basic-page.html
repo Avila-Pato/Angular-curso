@@ -1,1 +1,52 @@
-<p>basic-page works!</p>,
+<section>
+  <h1>Pipes Basicos</h1>
+  <h3>Pipes incluidos de angular</h3>
+</section>
+
+<div class="stats stats-vertical lg:stats-horizontal shadow w-full">
+  <div class="stat">
+    <div class="stat-title">Lower case</div>
+    <div class="stat-value">{{ nameUpper() | lowercase }}</div>
+    <div class="stat-desc">Jan 1st - Feb 1st</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-title">Upper case pipe</div>
+    <div class="stat-value">{{ nameLower() | uppercase }}</div>
+    <div class="stat-desc">{{ nameLower() }}</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-title">Tiitle case Pipe</div>
+    <div class="stat-value">{{ fullName() | titlecase }}</div>
+    <div class="stat-desc">{{ fullName() }}</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="stats stats-vertical lg:stats-horizontal shadow w-full">
+  <div class="stat">
+    <div class="stat-title">Date Pipe</div>
+    <div class="stat-value">{{ customDate() | date: 'fullDate' }}</div>
+    <div class="stat-desc">Jan 1st - Feb 1st</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-title">Upper case pipe</div>
+    <div class="stat-value">{{ customDate() | date: 'dd/MM/yyyy' }}</div>
+    <div class="stat-desc">{{ nameLower() }}</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-title">Date con segundos</div>
+    <div class="stat-value">{{ customDate() | date: 'HH:mm:ss' }}</div>
+    <div class="stat-desc">{{ nameLower() }}</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-title">Upper case pipe</div>
+    <div class="stat-value">{{ customDate() | date: 'EEEE d, MMMM' }}</div>
+    <div class="stat-desc">{{ nameLower() }}</div>
+  </div>
+</div>

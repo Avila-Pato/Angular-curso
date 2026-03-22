@@ -1,1 +1,23 @@
-<p>numbers-page works!</p>,
+<section>
+    <h1>Pipes Numericos</h1>
+    <h3>Pipes incluidos de angular</h3>
+</section>
+
+<div class="stats stats-vertical lg:stats-horizontal shadow w-full">
+  <div class="stat">
+    <div class="stat-title">Numbers: '1.0-0'</div>
+    <div class="stat-value">{{ totalSells() | number: '1.0-0' }}</div>
+    <div class="stat-desc">Jan 1st - Feb 1st</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-title">Current Profit</div>
+    <div class="stat-value">{{ totalSells() | currency: 'CLP': 'symbol-narrow': '1.2-2'}}</div>
+    <div class="stat-desc">{{ totalSells() }}</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-value">{{ percent() | percent}}</div>
+    <div class="stat-desc">{{ percent() }}</div>
+  </div>
+</div>
