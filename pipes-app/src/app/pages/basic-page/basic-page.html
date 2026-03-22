@@ -50,3 +50,15 @@
     <div class="stat-desc">{{ nameLower() }}</div>
   </div>
 </div>
+
+<div class="divider"></div>
+
+<div class="flex flex-row gap-2">
+  <h1 class="text-2xl font-semibold">
+    Local actual:
+    <span class="badge badge-secondary">{{ currentLocale()  }}</span>
+  </h1>
+
+  <button class="btn btn-primary" (click)="changeLocale('es-CL')">Cambiar a Español</button>
+  <button class="btn btn-primary" (click)="changeLocale('en-AU')">Cambiar a Inglés</button>
+</div>
