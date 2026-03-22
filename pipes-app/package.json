@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:css": "npx @tailwindcss/cli -i app.css -o public/output.css"
+
   },
   "prettier": {
     "printWidth": 100,
