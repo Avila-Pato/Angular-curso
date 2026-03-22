@@ -17,5 +17,10 @@ export const routes: Routes = [
     {
         path: 'uncommon',
         loadComponent: () => import('./pages/uncommon-page/uncommon-page')
+    },
+    //Ruta por defecto
+    {
+        path: '**',
+        redirectTo: 'basic'
     }
 ];
