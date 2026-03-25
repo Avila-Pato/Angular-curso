@@ -26,9 +26,9 @@ const client2 = {
 })
 export default class UncommonPage {
   // i18 select
-
   client = signal(client1)
 
+  // i18 select
   invitationMap = {
     male: 'invitarlo',
     female: 'invitarla'
